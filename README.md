@@ -1,4 +1,4 @@
-# Keras - Adversarial Reprogramming
+# Adversarial Reprogramming
 
 In this repository, I try to implement the Adversarial Reprogramming in Keras. 
 
