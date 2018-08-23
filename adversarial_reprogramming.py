@@ -14,6 +14,7 @@ from keras.engine.topology import Layer
 from keras import initializers,regularizers
 from keras.optimizers import Adam
 from keras.callbacks import LearningRateScheduler
+from PIL import Image
 import math
 
 # Learning phase is set to 0 since we want the network to use the pretrained moving mean/var
@@ -122,3 +123,35 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
 model.save_weights('adversarial.h5')
+
+data = np.concatenate((X_train,X_test),axis=0)
+label = np.concatenate((y_train,y_test),axis=0)
+
+pred = model.predict(data)
+
+top_probs = np.zeros((10))
+
+top_probs_idx = np.zeros((10)).astype('int')
+
+for i in range(len(data)):
+     if np.argmax(label[i])==np.argmax(pred[i]) and pred[i][np.argmax(pred[i])]>=top_probs[np.argmax(pred[i])]:
+             top_probs[np.argmax(pred[i])] = pred[i][np.argmax(pred[i])]
+             top_probs_idx[np.argmax(pred[i])] = i
+
+interim_model = Model(inputs=model.input,outputs=model.layers[-2].output)
+
+imgs = np.zeros((10,299,299,3)).astype('float32')
+
+for i, ind in enumerate(top_probs_idx):
+	prog = interim_model.predict(data[ind:ind+1])
+	imgs[i:i+1] = prog
+
+np.save("imgs.npy")
+
+## Saving them as png files
+
+for i in range(10):
+	fig = np.around((imgs[i] + 1.0) / 2.0 * 255)
+	fig = fig.astype(np.uint8).squeeze()
+	pic = Image.fromarray(fig)
+	pic.save("%d_new.png"%i)
