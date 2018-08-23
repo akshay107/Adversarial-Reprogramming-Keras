@@ -4,7 +4,7 @@ In this repository, I try to implement the Adversarial Reprogramming paper in Ke
 
 * G. Elsayed, I. Goodfellow, J. Sohl-Dickstein *Adversarial Reprogramming of Neural Networks* ([PDF](https://arxiv.org/pdf/1806.11146.pdf)) 
 
-In this repository, Inception V3 model is reprogrammed for MNIST classification.
+Here, Inception V3 model is reprogrammed for MNIST classification.
 
 The code is tested on Keras 2.1.3 and Tensorflow 1.4.0
 
