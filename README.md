@@ -17,4 +17,4 @@ The model achieves 92.88% training accuracy and 93.47% test accuracy. The traine
 This image is classified as "hammerhead" by Inception V3 model with 0.9041 probability.
 
 
-The imgs subfolder contains 10 images (one for each MNIST class) of adversarial program which gave the highest class probability. 
+The imgs subfolder contains 10 images (one for each MNIST class) of adversarial program which gave the highest class probability. The file imgs.npy contains these 10 image arrays. 
