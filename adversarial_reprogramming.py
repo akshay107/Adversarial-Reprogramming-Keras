@@ -16,12 +16,13 @@ from keras.optimizers import Adam
 from keras.callbacks import LearningRateScheduler
 import math
 
+# Learning phase is set to 0 since we want the network to use the pretrained moving mean/var
 K.clear_session()
 K.set_learning_phase(0)
 
 print("Loading Inception model")
 inception_model = InceptionV3()
-#W_before = inception_model.get_weights()
+
 ## Preparing MNIST dataset
 # input image dimensions
 print("Preparing MNIST dataset")
@@ -92,14 +93,6 @@ class MyLayer(Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape[0],input_shape[1],input_shape[2],input_shape[3])
 
-# learning rate schedule
-def step_decay(epoch):
-	initial_lrate = 0.05
-	decay = 0.96
-	epochs_drop = 2.0
-	lrate = initial_lrate * (1./(1. + decay*math.floor(epoch/epochs_drop)))
-        print("Epoch = %d learning rate = %f"%(epoch,lrate))
-	return lrate
 
 x = Input(shape=input_shape)
 x_aug = ZeroPadding2D(padding=((135,136),(135,136)))(x)
@@ -116,124 +109,16 @@ print(model.summary())
 adam = Adam(lr=0.05,decay=0.48)
 model.compile(loss='categorical_crossentropy', optimizer = adam, metrics=['accuracy'])
 
-# learning schedule callback
-#lrate = LearningRateScheduler(step_decay)
-#callbacks_list = [lrate]
-
-#model.fit(X_train, y_train, batch_size=batch_size, callbacks=callbacks_list, epochs=epochs, verbose=1)
-#model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1)
-
 model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1,
           validation_data=(X_train[:100],y_train[:100]))
-
-#model.load_weights('trial.h5')
-#score = model.evaluate(X_train[:100], y_train[:100], verbose=0)
-#print('Train loss:', score[0])
-#print('Train accuracy:', score[1])
-#model.save_weights('trial.h5')
-model.save_weights('adversarial.h5')
-
-
-#model.load_weights('adversarial.h5')
 
 
 score = model.evaluate(X_train, y_train, verbose=0)
 print('Train loss:', score[0])
 print('Train accuracy:', score[1])
 
-#W_after = inception_model.get_weights()
-
-
-#for i in range(len(W_after)):
-#	if not np.array_equal(W_after[i],W_before[i]):
-#		print("Fuck")
-#		print(i)
-#model.load_weights('adversarial.h5')
-
-#score = model.evaluate(X_train, y_train, verbose=0)
-#print('Train loss:', score[0])
-#print('Train accuracy:', score[1])
-
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
-#model.save_weights('adversarial.h5')
-
-
-
-'''
-data = np.concatenate((X_train,X_test),axis=0)
-label = np.concatenate((y_train,y_test),axis=0)
-
-pred = model.predict(data)
-
-top_probs = np.zeros((10))
-
-top_probs_idx = np.zeros((10))
-
-for i in range(len(data)):
-     if np.argmax(label[i])==np.argmax(pred[i]) and pred[i][np.argmax(pred[i])]>=top_probs[np.argmax(pred[i])]:
-             top_probs[np.argmax(pred[i])] = pred[i][np.argmax(pred[i])]
-             top_probs_idx[np.argmax(pred[i])] = i
-
-interim_model = Model(inputs=model.input,outputs=model.layers[-2].output)
-#interim_model.summary()
-
-
-from PIL import Image
-
-imgs = np.load("imgs.npy")
-
-for i in range(10):
-	fig = np.around((imgs[i] + 1.0) / 2.0 * 255)
-	fig = fig.astype(np.uint8).squeeze()
-	pic = Image.fromarray(fig)
-	pic.save("%d_new.png"%i)
-
-
-org_img = load_img("6_new.png")
-np_img = img_to_array(org_img)
-np_img = np.expand_dims(np_img, axis=0)
-final_img = preprocess_input(np_img)
-pred = inception_model.predict(final_img)
-
-
-for i in range(10):
-	org_img = load_img("%d_new.png"%i)
-	np_img = img_to_array(org_img)
-	np_img = np.expand_dims(np_img, axis=0)
-	final_img = preprocess_input(np_img)
-	pred = inception_model.predict(final_img)
-	label = decode_predictions(pred)
-	print(np.argmax(pred),np.max(pred), label[0][0][1])
-
-(0, 0.6044866, u'tench')
-(1, 0.87796897, u'goldfish')
-(2, 0.6075824, u'great_white_shark')
-(3, 0.6018741, u'tiger_shark')
-(4, 0.9041798, u'hammerhead')
-(5, 0.91017926, u'electric_ray')
-(6, 0.95157474, u'stingray')
-(7, 0.8722351, u'cock')
-(8, 0.8244661, u'hen')
-(9, 0.67793137, u'ostrich')
-
-
-imgs = np.load("imgs.npy")
-pred = inception_model.predict(imgs)
-
-for i in range(10):
-     print(np.argmax(pred[i]),np.max(pred[i]))
- 
-(0, 0.9732293)
-(1, 0.9910329)
-(2, 0.95925266)
-(3, 0.9316272)
-(4, 0.9861369)
-(5, 0.9819935)
-(6, 0.9761731)
-(7, 0.9852461)
-(8, 0.96967906)
-(9, 0.9955556)
-'''
+model.save_weights('adversarial.h5')
