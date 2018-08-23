@@ -1,6 +1,6 @@
 # Keras - Adversarial Reprogramming
 
-In this repository, I try to implement the Adversarial Reprogramming paper in Keras. 
+In this repository, I try to implement the Adversarial Reprogramming in Keras. 
 
 * G. Elsayed, I. Goodfellow, J. Sohl-Dickstein *Adversarial Reprogramming of Neural Networks* ([PDF](https://arxiv.org/pdf/1806.11146.pdf)) 
 
