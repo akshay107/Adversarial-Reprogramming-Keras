@@ -8,7 +8,7 @@ The trained weights can be downloaded using this [link](https://drive.google.com
 
 ![Alt text](imgs/4_new.png?raw=true "Title")
 
-This image is classified as tench by Inception V3 model with 0.6045 probability.
+This image is classified as "hammerhead" by Inception V3 model with 0.9041 probability.
 
 
 The imgs subfolder contains 10 images (one for each MNIST class) of adversarial program which gave the highest class probability. 
