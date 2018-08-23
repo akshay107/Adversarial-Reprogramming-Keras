@@ -4,6 +4,6 @@ This repository contains the Keras implementation of Adversarial Reprogramming p
 
 To train the model, run adversarial_reprogramming.py
 
-The trained weights can be downloaded using the [link](https://drive.google.com/file/d/1PUaoonDEdfseL9F0lFONrEDednB2KUCd/view)
+The trained weights can be downloaded using this [link](https://drive.google.com/file/d/1PUaoonDEdfseL9F0lFONrEDednB2KUCd/view).
 
 The imgs subfolder contains the 10 images (one for each MNIST class) of adversarial program which gave the highest class probability. 
