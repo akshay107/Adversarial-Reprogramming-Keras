@@ -10,7 +10,7 @@ The code is tested on Keras 2.1.3 and Tensorflow 1.4.0
 
 To train the model, run adversarial_reprogramming.py
 
-The trained weights can be downloaded using this [link](https://drive.google.com/file/d/1PUaoonDEdfseL9F0lFONrEDednB2KUCd/view).
+The model achieves 92.88 % training accuracy and 93.47 % test accuracy. The trained weights can be downloaded using this [link](https://drive.google.com/file/d/1PUaoonDEdfseL9F0lFONrEDednB2KUCd/view).
 
 ![Alt text](imgs/4_new.png?raw=true "Title")
 
